@@ -1,13 +1,17 @@
 import { Slot, component$ } from "@builder.io/qwik";
-import styles from "./infobox.module.css";
 
+// PUBLIC_INTERFACE
 export default component$(() => {
   return (
-    <div class={styles.infobox}>
-      <h3>
-        <Slot name="title" />
-      </h3>
-      <Slot />
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">
+          <Slot name="title" />
+        </h3>
+        <div class="text-secondary">
+          <Slot />
+        </div>
+      </div>
     </div>
   );
 });

@@ -1,6 +1,5 @@
 .host {
   display: grid;
-
   align-items: center;
   justify-content: center;
   justify-items: center;
@@ -12,21 +11,25 @@
   --center: 12;
 
   width: 100%;
-  height: 500px;
+  height: 400px;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg-primary) 100%);
 
   contain: strict;
 }
 
-h1 {
-  margin-bottom: 60px;
-}
-
-.input {
-  width: 60%;
+@media (min-width: 768px) {
+  .host {
+    height: 500px;
+    min-height: 500px;
+  }
 }
 
 .square {
-  --size: calc(40px + var(--index) * var(--size-step));
+  --size: calc(30px + var(--index) * var(--size-step));
 
   display: block;
   width: var(--size);
@@ -34,16 +37,18 @@ h1 {
   transform: rotateZ(
     calc(var(--rotation) * var(--state) * (var(--center) - var(--index)))
   );
-  transition-property: transform, border-color;
-  transition-duration: 5s;
+  transition-property: transform, border-color, background-color;
+  transition-duration: 3s;
   transition-timing-function: ease-in-out;
   grid-area: 1 / 1;
-  background: white;
+  background: var(--color-bg-elevated);
   border-width: 2px;
   border-style: solid;
-  border-color: black;
+  border-color: var(--color-border-medium);
   box-sizing: border-box;
-  will-change: transform, border-color;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  will-change: transform, border-color, background-color;
 
   contain: strict;
 }
@@ -51,27 +56,70 @@ h1 {
 .square.odd {
   --luminance: calc(1 - calc(calc(var(--index) * var(--odd-color-step)) / 256));
   background: rgb(
-    calc(172 * var(--luminance)),
-    calc(127 * var(--luminance)),
-    calc(244 * var(--luminance))
+    calc(25 * var(--luminance) + 150),
+    calc(118 * var(--luminance) + 100),
+    calc(210 * var(--luminance) + 30)
   );
+  border-color: var(--color-primary);
 }
 
+.square:nth-child(even) {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  opacity: 0.8;
+}
+
+/* Pride mode colors */
 .pride .square:nth-child(12n + 1) {
   background: #e70000;
+  border-color: #e70000;
 }
 .pride .square:nth-child(12n + 3) {
   background: #ff8c00;
+  border-color: #ff8c00;
 }
 .pride .square:nth-child(12n + 5) {
   background: #ffef00;
+  border-color: #ffef00;
 }
 .pride .square:nth-child(12n + 7) {
   background: #00811f;
+  border-color: #00811f;
 }
 .pride .square:nth-child(12n + 9) {
   background: #0044ff;
+  border-color: #0044ff;
 }
 .pride .square:nth-child(12n + 11) {
   background: #760089;
+  border-color: #760089;
+}
+
+/* Custom slider styles */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  border: 2px solid var(--color-bg-elevated);
+  box-shadow: var(--shadow-md);
+}
+
+.slider::-moz-range-thumb {
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  border: 2px solid var(--color-bg-elevated);
+  box-shadow: var(--shadow-md);
+}
+
+/* Animation improvements */
+@media (prefers-reduced-motion: reduce) {
+  .square {
+    transition-duration: 0.01ms;
+  }
 }

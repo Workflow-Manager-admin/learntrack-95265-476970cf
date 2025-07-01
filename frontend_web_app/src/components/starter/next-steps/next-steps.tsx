@@ -1,5 +1,4 @@
 import { component$, $, useOnWindow, useSignal } from "@builder.io/qwik";
-import styles from "./next-steps.module.css";
 
 export const GETTING_STARTED_STEPS = [
   {
@@ -30,6 +29,7 @@ export const GETTING_STARTED_STEPS = [
   },
 ];
 
+// PUBLIC_INTERFACE
 export default component$(() => {
   const gettingStartedStep = useSignal(0);
 
@@ -42,40 +42,77 @@ export default component$(() => {
     }),
   );
 
+  const currentStep = GETTING_STARTED_STEPS[gettingStartedStep.value];
+
   return (
-    <div class="container container-purple container-center">
-      <h2>
-        Time for a
-        <br />
-        <span class="highlight">qwik intro</span>?
-      </h2>
-      <div class={styles.gettingstarted}>
-        <div
-          class={styles.intro}
-          dangerouslySetInnerHTML={
-            GETTING_STARTED_STEPS[gettingStartedStep.value].message
-          }
-        />
-        <span
-          class={styles.hint}
-          dangerouslySetInnerHTML={
-            GETTING_STARTED_STEPS[gettingStartedStep.value].hint
-          }
-        />
+    <section class="bg-secondary py-16">
+      <div class="container">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">
+            Time for a
+            <br />
+            <span class="text-accent">qwik intro</span>?
+          </h2>
+          
+          <div class="card max-w-2xl mx-auto mb-8">
+            <div class="card-body">
+              <div class="flex items-center justify-between mb-4">
+                <span class="badge badge-primary">
+                  Step {gettingStartedStep.value + 1} of {GETTING_STARTED_STEPS.length}
+                </span>
+                <div class="w-32 h-2 bg-secondary rounded-full overflow-hidden">
+                  <div 
+                    class="h-full bg-primary transition-all duration-300"
+                    style={{ 
+                      width: `${((gettingStartedStep.value + 1) / GETTING_STARTED_STEPS.length) * 100}%` 
+                    }}
+                  ></div>
+                </div>
+              </div>
+              
+              <div
+                class="text-base md:text-lg text-primary mb-4"
+                dangerouslySetInnerHTML={currentStep.message}
+              />
+              
+              {currentStep.hint && (
+                <div
+                  class="text-sm text-secondary p-4 bg-secondary rounded-lg"
+                  dangerouslySetInnerHTML={currentStep.hint}
+                />
+              )}
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            {gettingStartedStep.value + 1 < GETTING_STARTED_STEPS.length ? (
+              <>
+                <button 
+                  class="btn btn-primary"
+                  onClick$={() => gettingStartedStep.value++}
+                >
+                  Continue to Step {gettingStartedStep.value + 2}
+                </button>
+                {gettingStartedStep.value > 0 && (
+                  <button 
+                    class="btn btn-secondary"
+                    onClick$={() => gettingStartedStep.value--}
+                  >
+                    Previous Step
+                  </button>
+                )}
+              </>
+            ) : (
+              <button
+                class="btn btn-accent"
+                onClick$={() => (gettingStartedStep.value = 0)}
+              >
+                🔄 Start Over
+              </button>
+            )}
+          </div>
+        </div>
       </div>
-      {gettingStartedStep.value + 1 < GETTING_STARTED_STEPS.length ? (
-        <button class="button-dark" onClick$={() => gettingStartedStep.value++}>
-          Continue with Step {gettingStartedStep.value + 2} of{" "}
-          {GETTING_STARTED_STEPS.length}
-        </button>
-      ) : (
-        <button
-          class="button-dark"
-          onClick$={() => (gettingStartedStep.value = 0)}
-        >
-          Re-Start
-        </button>
-      )}
-    </div>
+    </section>
   );
 });

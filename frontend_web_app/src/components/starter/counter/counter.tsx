@@ -1,7 +1,7 @@
 import { component$, useSignal, $ } from "@builder.io/qwik";
-import styles from "./counter.module.css";
 import Gauge from "../gauge";
 
+// PUBLIC_INTERFACE
 export default component$(() => {
   const count = useSignal(70);
 
@@ -13,17 +13,27 @@ export default component$(() => {
   });
 
   return (
-    <div class={styles["counter-wrapper"]}>
+    <div class="flex items-center justify-center gap-6 py-12">
       <button
-        class="button-dark button-small"
+        class="btn btn-primary btn-lg btn-icon"
         onClick$={() => setCount(count.value - 1)}
+        disabled={count.value <= 0}
+        aria-label="Decrease value"
       >
-        -
+        −
       </button>
-      <Gauge value={count.value} />
+      <div class="flex flex-col items-center gap-4">
+        <Gauge value={count.value} />
+        <div class="text-center">
+          <div class="text-sm text-secondary">Current Value</div>
+          <div class="text-lg font-semibold text-primary">{count.value}%</div>
+        </div>
+      </div>
       <button
-        class="button-dark button-small"
+        class="btn btn-primary btn-lg btn-icon"
         onClick$={() => setCount(count.value + 1)}
+        disabled={count.value >= 100}
+        aria-label="Increase value"
       >
         +
       </button>

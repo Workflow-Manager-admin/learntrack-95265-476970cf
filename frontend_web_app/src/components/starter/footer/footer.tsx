@@ -1,18 +1,24 @@
 import { component$ } from "@builder.io/qwik";
 import { useServerTimeLoader } from "../../../routes/layout";
-import styles from "./footer.module.css";
 
+// PUBLIC_INTERFACE
 export default component$(() => {
   const serverTime = useServerTimeLoader();
 
   return (
-    <footer>
+    <footer class="bg-secondary border-t mt-auto">
       <div class="container">
-        <a href="https://www.builder.io/" target="_blank" class={styles.anchor}>
-          <span>Made with ♡ by Builder.io</span>
-          <span class={styles.spacer}>|</span>
-          <span>{serverTime.value.date}</span>
-        </a>
+        <div class="py-6 text-center">
+          <a 
+            href="https://www.builder.io/" 
+            target="_blank" 
+            class="text-sm text-tertiary hover:text-secondary transition-colors"
+          >
+            <span>Made with ♡ by Builder.io</span>
+            <span class="mx-2">|</span>
+            <span>{new Date(serverTime.value.date).toLocaleDateString()}</span>
+          </a>
+        </div>
       </div>
     </footer>
   );
